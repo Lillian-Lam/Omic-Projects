@@ -18,7 +18,7 @@ Ren P, Zhang R, Meng Y, Zhang Z, Zeng Z et al. Systematic Benchmarking of High-T
 
 #### 1. ***Visium & CODEX spatial alignment***
 - Used STalign to align the adjacent slides of the Visium and CODEX data
-- Note: I set up a virtual environment as STalign uses python 3.10 and I had a lot of dependency problems
+- Note: I set up a virtual environment to run STalign because STalign uses python 3.10 and I had a lot of dependency problems
 - I tried to match the protein to the gene that codes directly for it (no regulatory genes), but don't trust me 
 
 #### 2. **Data Aggregation** (`aggregate_visium_hd_bins`)
