@@ -401,7 +401,7 @@ avg_hour12 <- plot_avg_marker_heatmap(deconGexp_hour12, res_hour12, '12h', marke
 ```
 
 ```{r}
-#compute mean proportion per cell type for each condition 
+#compute mean proportion per cell type for each condition
 get_mean_props <- function(deconProp_named, condition) {
   as.data.frame(deconProp_named) %>%
     summarise(across(everything(), mean)) %>%
@@ -449,6 +449,28 @@ ggplot(df_all, aes(x = CellType, y = Proportion, fill = Condition)) +
 ```
 
 ```{r}
+#collapse _1 and _2 suffixes into their base cell type
+df_all <- df_all %>%
+  mutate(CellType = gsub('_1$|_2$|Injured_', '', CellType)) %>%
+  group_by(Condition, CellType) %>%
+  summarise(Proportion = sum(Proportion), .groups = 'drop') %>%
+  mutate(Condition = factor(Condition, levels = c('Sham', '4h', '12h')))
+
+ggplot(df_all, aes(x = CellType, y = Proportion, fill = Condition)) +
+  geom_bar(stat = 'identity', position = position_dodge(width = 0.8), width = 0.7) +
+  scale_fill_manual(values = c('Sham' = 'green', '4h' = 'orange', '12h' = 'purple')) +
+  labs(title = 'Cell type proportions: Sham vs 4h vs 12h',
+       x = 'Cell Type',
+       y = 'Mean Proportion',
+       fill = 'Condition') +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        plot.title = element_text(face = "bold", size = 12, hjust = 0.5)) +
+  scale_y_continuous(expand = c(0, 0)) +
+  coord_cartesian(ylim = c(0, 0.4))
+```
+
+```{r}
 df_all <- df_all %>%
   group_by(Condition) %>%
   mutate(Tissue_Percent = (Proportion / sum(Proportion)) * 100) %>%
@@ -466,6 +488,7 @@ ggplot(df_all, aes(x = CellType, y = Tissue_Percent, fill = Condition)) +
         plot.title = element_text(face = "bold", size = 12, hjust = 0.5)) +
   scale_y_continuous(expand = c(0, 0))
 ```
+
 ```{r}
 cortex_types  <- c('Pod', 'PTs12', 'PTs3', 'PTs3_TAL', 'DCT')
 medulla_types <- c('TAL', 'DTL', 'PC', 'IC')
@@ -1155,6 +1178,7 @@ ggplot(sham, aes(x=X, y=Y, color=Mrc1))+geom_point()+theme_classic() + scale_col
 ggplot(hour12, aes(x=X, y=Y, color=Mrc1)) +geom_point()+theme_classic() + scale_color_gradient(low = 'blue', high = 'red',)
 ggplot(hour4, aes(x=X, y=Y, color=Mrc1)) +geom_point()+theme_classic() + scale_color_gradient(low = 'blue', high = 'red',)
 ```
+
 
 
 
