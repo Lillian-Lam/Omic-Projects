@@ -401,7 +401,7 @@ avg_hour12 <- plot_avg_marker_heatmap(deconGexp_hour12, res_hour12, '12h', marke
 ```
 
 ```{r}
-#compute mean proportion per cell type for each condition ────────────────
+#compute mean proportion per cell type for each condition 
 get_mean_props <- function(deconProp_named, condition) {
   as.data.frame(deconProp_named) %>%
     summarise(across(everything(), mean)) %>%
@@ -448,52 +448,6 @@ ggplot(df_all, aes(x = CellType, y = Proportion, fill = Condition)) +
 
 ```
 
-```{r}
-#compute mean proportion per cell type for each condition ────────────────
-get_mean_props <- function(deconProp_named, condition) {
-  as.data.frame(deconProp_named) %>%
-    summarise(across(everything(), mean)) %>%
-    pivot_longer(everything(), names_to = 'CellType', values_to = 'Proportion') %>%
-    mutate(Condition = condition)
-}
-
-df_sham<- get_mean_props(res_sham$deconProp_named,   'Sham')
-df_hour4<- get_mean_props(res_hour4$deconProp_named,  '4h')
-df_hour12<- get_mean_props(res_hour12$deconProp_named, '12h')
-
-all_cell_types <- unique(c(
-  unique(df_sham$CellType),
-  unique(df_hour4$CellType),
-  unique(df_hour12$CellType)
-))
-
-#make a complete grid of all conditions and cell types
-df_all <- expand.grid(Condition = c('Sham', '4h', '12h'),
-                      CellType = all_cell_types,
-                      stringsAsFactors = F) %>%
-                      left_join(
-                        bind_rows(df_sham, df_hour4, df_hour12),
-                        by = c('Condition', 'CellType')) %>%
-                      #replace NA with 0
-                      mutate(
-                        Proportion = ifelse(is.na(Proportion), 0, Proportion),
-                        Condition = factor(Condition, levels = c('Sham', '4h', '12h')))
-
-ggplot(df_all, aes(x = CellType, y = Proportion, fill = Condition)) +
-  geom_bar(stat = 'identity', position = position_dodge(width = 0.8), width = 0.7) +
-  scale_fill_manual(values = c('Sham' = 'green', '4h' = 'orange', '12h' = 'purple')) +
-  labs(title = 'Cell type proportions: Sham vs 4h vs 12h',
-       x= 'Cell Type',
-       y= 'Mean Proportion',
-       fill= 'Condition') +
-  theme_classic() +
-  theme(axis.text.x  = element_text(angle = 45, hjust = 1),
-        plot.title   = element_text(hjust = 0.5))+
-  scale_y_continuous(expand = c(0, 0)) +
-  coord_cartesian(ylim=c(0, 0.4))+
-  theme(plot.title = element_text(face = "bold", size = 12, hjust = 0.5))
-
-```
 ```{r}
 df_all <- df_all %>%
   group_by(Condition) %>%
@@ -1201,6 +1155,7 @@ ggplot(sham, aes(x=X, y=Y, color=Mrc1))+geom_point()+theme_classic() + scale_col
 ggplot(hour12, aes(x=X, y=Y, color=Mrc1)) +geom_point()+theme_classic() + scale_color_gradient(low = 'blue', high = 'red',)
 ggplot(hour4, aes(x=X, y=Y, color=Mrc1)) +geom_point()+theme_classic() + scale_color_gradient(low = 'blue', high = 'red',)
 ```
+
 
 
 
