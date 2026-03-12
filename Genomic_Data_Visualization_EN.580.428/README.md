@@ -40,7 +40,7 @@ Each file contains Visium spot-level gene expression (spots x genes) along with 
 - Raw counts filtered using `cleanCounts()` (minimum library size: 100)
 - Feature selection via `restrictCorpus()` - genes appearing in fewer than 5% or more than 100% of spots excluded. the top 1,000 overdispersed genes retained per condition
 
-### 2. STdeconvolve — Cell Type Deconvolution
+### 2. STdeconvolve - Cell Type Deconvolution
 - LDA (Latent Dirichlet Allocation) models fit across K = 2-9 topics using `fitLDA()` to determine best fit
 - Optimal K=7 selected for all three conditions based on perplexity and proportion of rare cell types (though I admit that K=8 is better for 12h)
 - Cell-type proportions ($\theta$) and transcriptional profiles ($\beta$) extracted via `getBetaTheta()`
@@ -58,7 +58,7 @@ Each file contains Visium spot-level gene expression (spots x genes) along with 
 ### 4. Differential Expression & Volcano Plot
 - Pseudobulk differential expression performed comparing AKI conditions to Sham
 - Significance threshold: adjusted p-value < 0.05 and |log2FC| > 1
-- Top upregulated markers of acute cortical stress labeled (e.g., *Havcr1*, *Krt20*, *Lcn2*, *Serpine1*, *Cdkn1a*)
+- Top upregulated markers of acute cortical stress during 12h labeled (e.g., *Havcr1*, *Krt20*, *Lcn2*, *Serpine1*, *Cdkn1a*)
 
 ### 5. Integrated Damage Score
 - Aggregated expression of the top 10 DE markers into a per-spot SCT module score
