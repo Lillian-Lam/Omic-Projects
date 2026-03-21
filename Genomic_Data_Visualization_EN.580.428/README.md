@@ -1,6 +1,6 @@
 # Spatially Resolved Transcriptomics in Male Mouse Kidney After Ischemia-Reperfusion Injury
 
-**Authors:** Lillian Lam & Rotimi Oni
+**Authors:** Lillian Lam & Rotimi Oni (Dedenne Group)
 
 **Course:** Genomic Data Visualization (EN.580.428)
 
